@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use App\News;
 use App\NewsCategory;
+use Image;
 
 class AdminNewsController extends Controller
 {
@@ -14,7 +16,8 @@ class AdminNewsController extends Controller
       $recentNewsList = News::select('news.*', 'news_category.category')->join('news_category', 'news_category.id', '=', 'news.news_category_id')->orderBy('news.created_at', 'desc')->limit('5')->get();
       $newsLiked = News::select('title', 'liked', 'shared', DB::raw('(liked+shared) as t_like_share'))->orderBy('liked', 'desc')->limit('5')->get();
       $newsShared = News::select('title', 'shared')->orderBy('shared', 'desc')->limit('5')->get();
-      return view('admin.news.index', compact('newsList', 'recentNewsList', 'newsLiked', 'newsShared'));
+      $categories = NewsCategory::orderBy('category', 'acs')->get();
+      return view('admin.news.index', compact('newsList', 'recentNewsList', 'newsLiked', 'newsShared', 'categories'));
     }
 
     public function add(){
@@ -33,6 +36,15 @@ class AdminNewsController extends Controller
         $news->news_category_id = $newCategory->id;
       }else{
         $news->news_category_id = $input->category;
+      }
+      if($input->hasFile('featured_image')){
+        $image = $input->featured_image;
+        $newname = time() . "." . $image->getClientOriginalExtension();
+        $location = public_path('images/news/' . $newname);
+        Image::make($image)->resize(1024, null, function ($constraint) {
+          $constraint->aspectRatio();
+        })->save($location);
+        $news->featured_image = $newname;
       }
       $news->save();
 
@@ -57,6 +69,18 @@ class AdminNewsController extends Controller
       }else{
         $updateNews->news_category_id = $input->category;
       }
+      if($input->hasFile('featured_image')){
+        $image = $input->featured_image;
+        $newname = time() . "." . $image->getClientOriginalExtension();
+        $location = public_path('images/news/' . $newname);
+        Image::make($image)->resize(1024, null, function ($constraint) {
+          $constraint->aspectRatio();
+        })->save($location);
+        if ($updateNews->featured_image) {
+          Storage::delete('news/' . $updateNews->featured_image);
+        }
+        $updateNews->featured_image = $newname;
+      }
       $updateNews->save();
 
       return redirect('/admin-paul/news');
@@ -64,9 +88,12 @@ class AdminNewsController extends Controller
 
     public function delete($id){
       $deleteNews = News::find($id);
+      // if (Storage::delete('news/' . $deleteNews->featured_image)) {
+      //   return redirect()->back();
+      // }else{
+      //   return redirect()->back();
+      // }
       $deleteNews->delete();
-
-      return redirect()->back();
     }
 
     public function preview($id){
@@ -75,6 +102,36 @@ class AdminNewsController extends Controller
         return view('admin.news.preview', compact('news'));
       }else{
         return redirect('/admin-paul/news');
+      }
+    }
+
+    public function showCategory($id){
+      $category = NewsCategory::find($id);
+      if (!$category){
+        return redirect('/admin-paul/news');
+      }
+      $news = NewsCategory::find($id)->news;
+      // dd($news->count());
+
+      return view('admin.news.category', compact('category', 'news'));
+    }
+
+    public function updateCatageory($id, Request $input){
+      $category = NewsCategory::find($id);
+      $category->category = $input->category;
+      $category->save();
+
+      return redirect()->back();
+    }
+
+    public function deleteCategory($id){
+      $category = NewsCategory::find($id);
+      $news = $category->news;
+      if($news->count() <= 0){
+        $category->delete();
+        return redirect('/admin-paul/news');
+      }else{
+        return redirect()->back();
       }
     }
 }

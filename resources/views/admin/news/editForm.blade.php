@@ -14,7 +14,7 @@
 
   <div class="row">
     <div class="col-md-12">
-      <h1 class="page-header">Add News</h1>
+      <h1 class="page-header">Edit News</h1>
     </div>
   </div>
 
@@ -22,10 +22,10 @@
     <div class="col-md-12">
       <div class="panel panel-default">
         <div class="panel-heading">
-          Add News
+          Edit News
         </div>
         <div class="panel-body">
-          <form role="form" action="" method="post">
+          <form id="editNews" role="form" action="" method="post" enctype="multipart/form-data">
             {{ csrf_field() }}
             <div class="form-group">
               <label>Title</label>
@@ -33,7 +33,20 @@
             </div>
             <div class="form-group">
               <label>Content</label>
-              <textarea class="form-control" rows="5" name="content" required>{{$editNews->content}}</textarea>
+              <textarea class="form-control tinymcetextarea" rows="5" name="content" required>{{$editNews->content}}</textarea>
+            </div>
+            <div class="form-group">
+              <label>Featured Image</label>
+              <input class="form-control" type="file" name="featured_image">
+              <br>
+              <p>
+                Current image:
+                @if ($editNews->featured_image)
+                  <img src="{{asset('images/news/' . $editNews->featured_image)}}" alt="{{$editNews->featured_image}}" width="240px">
+                @else
+                  no image
+                @endif
+              </p>
             </div>
             <div class="form-group">
               <label>Category</label>
@@ -47,7 +60,7 @@
               </select>
               <input id="newCategory" class="form-control" placeholder="Please specify new category here" name="new_category" style="display: none;">
             </div>
-            <button class="btn btn-success" type="submit">Post</button>
+            <button class="btn btn-success" type="button" onclick="getElementById('editForm').submit();">Post</button>
           </form>
         </div>
       </div>

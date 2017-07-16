@@ -17,6 +17,7 @@ class News extends Migration
             $table->increments('id');
             $table->string('title');
             $table->longText('content');
+            $table->string('featured_image')->nullable();
             $table->integer('news_category_id');
             $table->unsignedInteger('liked')->default(0);
             $table->unsignedInteger('shared')->default(0);

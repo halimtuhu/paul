@@ -25,7 +25,7 @@
           Add News
         </div>
         <div class="panel-body">
-          <form role="form" action="" method="post">
+          <form id="addNews" role="form" action="" method="post" enctype="multipart/form-data">
             {{ csrf_field() }}
             <div class="form-group">
               <label>Title</label>
@@ -33,21 +33,27 @@
             </div>
             <div class="form-group">
               <label>Content</label>
-              <textarea class="form-control" rows="5" name="content" required></textarea>
+              <textarea class="form-control tinymcetextarea" rows="5" name="content" required></textarea>
+            </div>
+            <div class="form-group">
+              <label>Featured Image</label>
+              <input class="form-control file-manager" type="file" name="featured_image">
             </div>
             <div class="form-group">
               <label>Category</label>
               <select id="oldCategory" class="form-control" name="category" onchange="showNewCategoryForm();">
                 @if ($category->count() > 0)
                   @foreach ($category as $key => $value)
-                    <option value="{{$value->id}}">{{$value->category}}</option>
+                    <option value="{{$value->id}}">
+                      {{$value->category}}
+                    </option>
                   @endforeach
                 @endif
                 <option value="0">-- New --</option>
               </select>
               <input id="newCategory" class="form-control" placeholder="Please specify new category here" name="new_category" style="display: none;">
             </div>
-            <button class="btn btn-success" type="submit">Post</button>
+            <button class="btn btn-success" type="button" onclick="getElementById('addNews').submit();">Post</button>
           </form>
         </div>
       </div>
