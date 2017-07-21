@@ -60,7 +60,7 @@
               </select>
               <input id="newCategory" class="form-control" placeholder="Please specify new category here" name="new_category" style="display: none;">
             </div>
-            <button class="btn btn-success" type="button" onclick="getElementById('editForm').submit();">Post</button>
+            <button class="btn btn-success" type="button" onclick="getElementById('editNews').submit();">Post</button>
           </form>
         </div>
       </div>

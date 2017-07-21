@@ -29,6 +29,17 @@
     <!-- Custom Fonts -->
     <link href="/admin/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
+    <!-- Laravel Filemanager -->
+    <link rel="stylesheet" href="/vendor/laravel-filemanager/css/lfm.css">
+
+    <style media="screen">
+      .img-center{
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    </style>
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -44,6 +55,7 @@
 
     <!-- Plugin Script -->
     <script src="/plugin/tinymce/tinymce.min.js"></script>
+    <script src="/vendor/laravel-filemanager/js/lfm.js"></script>
     <script>
       var editor_config = {
         path_absolute : "/",
@@ -53,9 +65,9 @@
           "advlist autolink lists link image charmap print preview hr anchor pagebreak",
           "searchreplace wordcount visualblocks visualchars code fullscreen",
           "insertdatetime media nonbreaking save table contextmenu directionality",
-          "emoticons template paste textcolor colorpicker textpattern"
+          "emoticons template paste textcolor colorpicker textpattern preview"
         ],
-        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | forecolor backcolor emoticons",
+        toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media | forecolor backcolor emoticons | preview",
         relative_urls: false,
         file_browser_callback : function(field_name, url, type, win) {
           var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
@@ -76,10 +88,16 @@
             resizable : "yes",
             close_previous : "no"
           });
-        }
+        },
+        image_class_list: [
+          {title: 'None', value: ''},
+          {title: 'Bootstrap Responsive Center', value: 'img-responsive img-center'},
+        ],
+        content_css : '/admin/vendor/bootstrap/css/bootstrap.min.css',
       };
 
       tinymce.init(editor_config);
+
     </script>
     {{-- <script>
     tinymce.init({
@@ -125,7 +143,11 @@
                         <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        <li>
+                          <form style="display: none;" id="logout" role="form" action="/logout" method="post">
+                            {{ csrf_field() }}
+                          </form>
+                          <a href="#" onclick="document.getElementById('logout').submit();"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -214,6 +236,7 @@
         //     "searching": false
         // });
     });
+    $('#lfm').filemanager('image');
     </script>
 
 </body>

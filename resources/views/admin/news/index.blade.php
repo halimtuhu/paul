@@ -33,7 +33,7 @@
                   <td>{{$value->created_at}}</td>
                   <td>{{$value->title}}</td>
                   <td>{{$value->category}}</td>
-                  <td align="center">
+                  <td align="center" style="width: 100px">
                     <form id="deleteNews{{$value->id}}" action="/admin-paul/news/{{$value->id}}/delete" method="post" style="display: none;">
                       {{ csrf_field() }}
                     </form>

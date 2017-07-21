@@ -83,7 +83,7 @@ class AdminNewsController extends Controller
       }
       $updateNews->save();
 
-      return redirect('/admin-paul/news');
+      return redirect('/admin-paul/news/'.$updateNews->id.'/preview');
     }
 
     public function delete($id){
