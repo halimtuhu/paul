@@ -56,5 +56,7 @@ class DatabaseSeeder extends Seeder
       ]);
 
       factory(App\News::class, 100)->create();
+
+      factory(App\Scholarship::class, 100)->create();
     }
 }

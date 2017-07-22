@@ -40,6 +40,7 @@ class AdminNewsController extends Controller
       if($input->hasFile('featured_image')){
         $image = $input->featured_image;
         $newname = time() . "." . $image->getClientOriginalExtension();
+        Storage::disk('local')->makeDirectory('news');
         $location = public_path('images/news/' . $newname);
         Image::make($image)->resize(1024, null, function ($constraint) {
           $constraint->aspectRatio();
@@ -72,6 +73,7 @@ class AdminNewsController extends Controller
       if($input->hasFile('featured_image')){
         $image = $input->featured_image;
         $newname = time() . "." . $image->getClientOriginalExtension();
+        Storage::disk('local')->makeDirectory('news');
         $location = public_path('images/news/' . $newname);
         Image::make($image)->resize(1024, null, function ($constraint) {
           $constraint->aspectRatio();
@@ -88,11 +90,11 @@ class AdminNewsController extends Controller
 
     public function delete($id){
       $deleteNews = News::find($id);
-      // if (Storage::delete('news/' . $deleteNews->featured_image)) {
-      //   return redirect()->back();
-      // }else{
-      //   return redirect()->back();
-      // }
+      if (Storage::delete('news/' . $deleteNews->featured_image)) {
+        return redirect()->back();
+      }else{
+        return redirect()->back();
+      }
       $deleteNews->delete();
     }
 

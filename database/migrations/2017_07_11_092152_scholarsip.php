@@ -20,8 +20,9 @@ class Scholarsip extends Migration
             $table->string('place');
             $table->longText('description');
             $table->dateTime('deadline');
-            $table->unsignedInteger('liked')->default(0);
-            $table->unsignedInteger('shered')->default(0);
+            $table->string('featured_image')->nullable();
+            $table->unsignedInteger('liked')->nullable()->default(0);
+            $table->unsignedInteger('shered')->nullable()->default(0);
             $table->timestamps();
         });
     }

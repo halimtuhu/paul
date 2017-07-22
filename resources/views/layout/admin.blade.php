@@ -183,7 +183,7 @@
                             <a href="/admin-paul/forum"><i class="fa fa-group fa-fw"></i> Forum</a>
                         </li>
                         <li>
-                            <a href="/admin-paul/scholarship"><i class="fa fa-star fa-fw"></i> Scholarship</a>
+                            <a href="/admin-paul/scholarships"><i class="fa fa-star fa-fw"></i> Scholarship</a>
                         </li>
                         <li>
                             <a href="/admin-paul/users"><i class="fa fa-user fa-fw"></i> Users</a>

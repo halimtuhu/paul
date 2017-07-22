@@ -43,4 +43,12 @@ Route::group(['middleware' => 'admin'], function () {
   Route::post('/admin-paul/news/category/{id}/list', 'AdminNewsController@updateCategory');
   Route::post('/admin-paul/news/cateogry/{id}/delete', 'ADminNewsController@deleteCategory');
 
+  Route::get('/admin-paul/scholarships', 'AdminScholarshipsController@index');
+  Route::get('/admin-paul/scholarships/add', 'AdminScholarshipsController@add');
+  Route::post('/admin-paul/scholarships/add', 'AdminScholarshipsController@store');
+  Route::post('/admin-paul/scholarships/{id}/delete', 'AdminScholarshipsController@delete');
+  Route::get('/admin-paul/scholarships/{id}/edit', 'AdminScholarshipsController@edit');
+  Route::post('/admin-paul/scholarships/{id}/edit', 'AdminScholarshipsController@update');
+  Route::get('/admin-paul/scholarships/{id}/preview', 'AdminScholarshipsController@preview');
+
 });

@@ -24,21 +24,29 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 });
 
 $factory->define(App\NewsCategory::class, function (Faker\Generator $faker) {
-    static $password;
-
     return [
         'category' => $faker->word,
     ];
 });
 
 $factory->define(App\News::class, function (Faker\Generator $faker) {
-    static $password;
-
     return [
         'title' => $faker->sentence,
         'content' => $faker->paragraph(random_int(25, 150)),
         'news_category_id' => App\NewsCategory::all()->random()->id,
         'liked' => $faker->numberBetween(0, 1024),
         'shared' => $faker->numberBetween(0, 1024),
+    ];
+});
+
+$factory->define(App\Scholarship::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->sentence,
+        'organizer' => $faker->company,
+        'place' => $faker->country,
+        'description' => $faker->paragraph(random_int(25, 75)),
+        'deadline' => $faker->dateTime('2020-01-01'),
+        'liked' => $faker->numberBetween(0, 1024),
+        'shered' => $faker->numberBetween(0, 1024),
     ];
 });
