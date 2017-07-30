@@ -66,7 +66,7 @@
             <tbody>
               @foreach ($newsLiked as $key => $value)
                 <tr>
-                  <td>{{$value->title}}</td>
+                  <td><a href="/admin-paul/news/{{$value->id}}/preview">{{$value->title}}</a></td>
                   <td>{{$value->liked}} / {{$value->shared}}</td>
                   <td>{{$value->t_like_share}}</td>
                 </tr>
@@ -85,7 +85,29 @@
           Recent Comment
         </div>
         <div class="panel-body">
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+          @foreach ($comments as $key => $value)
+            <div class="row">
+              <div class="col-md-12">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <span class="pull-left">
+                      {{$value->user->username}} at <a href="/admin-paul/news/{{$value->news->id}}/preview">{{$value->news->title}}</a>
+                    </span>
+                    <span class="pull-right">
+                      <a href="#" type="button" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></a>
+                    </span>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="panel-body">
+                    <p>{{$value->comment}}</p>
+                  </div>
+                  <div class="panel-footer">
+                    <small>{{$value->user->email}}</small> || <small>{{$value->created_at}}</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          @endforeach
         </div>
       </div>
     </div>

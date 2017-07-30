@@ -160,6 +160,9 @@
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                         <li>
+                            <a href="/"><i class="fa fa-globe fa-fw"></i> Website</a>
+                        </li>
+                        <li>
                             <a href="/admin-paul"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
                         <li>
@@ -170,6 +173,9 @@
                               </li>
                               <li>
                                 <a href="/admin-paul/news/add">Add News</a>
+                              </li>
+                              <li>
+                                <a href="/admin-paul/news/category">News Category</a>
                               </li>
                             </ul>
                         </li>

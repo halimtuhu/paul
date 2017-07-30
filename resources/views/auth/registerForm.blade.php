@@ -43,6 +43,11 @@
                         <h3 class="panel-title">Please Sign In</h3>
                     </div>
                     <div class="panel-body">
+                        @if (session('info'))
+                          <div class="alert alert-{{session('type')}}">
+                            {{session('info')}}
+                          </div>
+                        @endif
                         <form role="form" action="" method="post">
                           {{ csrf_field() }}
                             <fieldset>

@@ -29,8 +29,8 @@
           {!!$news->content!!}
         </div>
         <div class="panel-footer">
-          <a href="#" type="button" class="btn btn-primary btn-xs"><i class="fa fa-thumbs-o-up"></i> 90</a>
-          <a href="#" type="button" class="btn btn-warning btn-xs"><i class="fa fa-share-square-o"></i> 88</a>
+          <a href="#" type="button" class="btn btn-primary btn-xs"><i class="fa fa-thumbs-o-up"></i> {{$news->liked}}</a>
+          <a href="#" type="button" class="btn btn-warning btn-xs"><i class="fa fa-share-square-o"></i> {{$news->shared}}</a>
         </div>
       </div>
     </div>
@@ -40,32 +40,38 @@
     <div class="col-md-6">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <span><strong>Comments</strong> (5)</span>
+          <span><strong>Comments</strong> ({{$comments->total()}})</span>
         </div>
         <div class="panel-body">
-          @for ($i=0; $i < 5; $i++)
+          @foreach ($comments as $key => $value)
             <div class="row">
               <div class="col-md-12">
                 <div class="panel panel-default">
                   <div class="panel-heading">
                     <span class="pull-left">
-                      Username123
+                      {{$value->user->username}}
                     </span>
                     <span class="pull-right">
-                      <a href="#" type="button" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></a>
+                      <form id="deleteComment{{$value->id}}" action="/admin-paul/news/{{$news->id}}/comment/{{$value->id}}/delete" method="post" style="display: none;">
+                        {{ csrf_field() }}
+                      </form>
+                      <a href="#" type="button" class="btn btn-xs btn-danger" onclick="document.getElementById('deleteComment{{$value->id}}').submit();"><i class="fa fa-times"></i></a>
                     </span>
                     <div class="clearfix"></div>
                   </div>
                   <div class="panel-body">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                    <p>{{$value->comment}}</p>
                   </div>
                   <div class="panel-footer">
-                    <small>email@mail.com</small> || <small>dd/mm/yyyy hh:mm:ss</small>
+                    <small>{{$value->user->email}}</small> || <small>{{$value->created_at}}</small>
                   </div>
                 </div>
               </div>
             </div>
-          @endfor
+          @endforeach
+          <center>
+            {{$comments->links()}}
+          </center>
         </div>
       </div>
     </div> {{-- /col-md-6 --}}
@@ -76,15 +82,8 @@
           Add Comments
         </div>
         <div class="panel-body">
-          <form action="" method="post">
-            <div class="form-group">
-              <label>Name</label>
-              <input class="form-control" name="name" required>
-            </div>
-            <div class="form-group">
-              <label>Email</label>
-              <input class="form-control" name="name" required>
-            </div>
+          <form action="/admin-paul/news/{{$news->id}}/comment" method="post">
+            {{ csrf_field() }}
             <div class="form-group">
               <textarea class="form-control" rows="5" name="comment" required></textarea>
             </div>

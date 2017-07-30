@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Scholarship;
+use App\ScholarshipsComment;
 use Image;
+use Sentinel;
 
 class AdminScholarshipsController extends Controller
 {
@@ -15,7 +17,8 @@ class AdminScholarshipsController extends Controller
       $recent = Scholarship::orderBy('created_at', 'desc')->limit('5')->get();
       $trending = Scholarship::select('name', 'liked', 'shered', DB::raw('(liked+shered) as t_like_share'))->orderBy('t_like_share', 'desc')->limit('5')->get();
       $near = Scholarship::select('name', 'place', 'deadline')->where('deadline', '>=', date('Y-m-s H:i:s'))->orderBy('deadline', 'asc')->limit('5')->get();
-      return view ('admin.scholarships.index', compact('scholarships', 'recent', 'trending', 'near'));
+      $comments = ScholarshipsComment::orderBy('created_at', 'desc')->limit('2')->get();
+      return view ('admin.scholarships.index', compact('scholarships', 'recent', 'trending', 'near', 'comments'));
     }
 
     public function add(){
@@ -43,7 +46,7 @@ class AdminScholarshipsController extends Controller
 
       $scholarship->save();
 
-      return redirect('/admin-paul/scholarships');
+      return redirect('/admin-paul/scholarships/'.$scholarship->id.'/preview');
     }
 
     public function delete($id){
@@ -88,7 +91,25 @@ class AdminScholarshipsController extends Controller
 
     public function preview($id){
       $scholarship = Scholarship::find($id);
+      $comments = $scholarship->comment()->orderBy('created_at', 'desc')->paginate('3');
 
-      return view('admin.scholarships.preview', compact('scholarship'));
+      return view('admin.scholarships.preview', compact('scholarship', 'comments'));
+    }
+
+    public function addComment($id, Request $input){
+      $comment = new ScholarshipsComment;
+      $comment->user_id = Sentinel::getUser()->id;
+      $comment->scholarship_id = $id;
+      $comment->comment = $input->comment;
+      $comment->save();
+
+      return redirect()->back();
+    }
+
+    public function deleteComment($scholarship_id, $comment_id){
+      $comment = ScholarshipsComment::find($comment_id);
+      $comment->delete();
+
+      return redirect()->back();
     }
 }

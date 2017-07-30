@@ -34,10 +34,24 @@ class DatabaseSeeder extends Seeder
 
       DB::table('activations')->insert([
         'user_id' => App\User::all()->first()->id,
-        'code' => str_random(191),
+        'code' => str_random(32),
         'completed' => '1',
         'completed_at' => date('Y-m-d H:i:s'),
       ]);
+
+      factory(App\User::class, 50)->create()->each(function ($user) {
+        DB::table('role_users')->insert([
+          'user_id' => $user->id,
+          'role_id' => '2',
+        ]);
+
+        DB::table('activations')->insert([
+          'user_id' => $user->id,
+          'code' => str_random(32),
+          'completed' => '1',
+          'completed_at' => date('Y-m-d H:i:s'),
+        ]);
+      });
 
       DB::table('news_category')->insert([
         'category' => 'Politic',
@@ -55,8 +69,15 @@ class DatabaseSeeder extends Seeder
         'category' => 'News Paper',
       ]);
 
-      factory(App\News::class, 100)->create();
+      factory(App\News::class, 100)->create()->each(function ($news) {
+        $userIds = range(1, 51);
+        shuffle($userIds);
+        $likeduser = array_slice($userIds, 0, random_int(2, 50));
+        $news->likes()->attach($likeduser);
+      });
+      factory(App\NewsComment::class, 500)->create();
 
       factory(App\Scholarship::class, 100)->create();
+      factory(App\ScholarshipsComment::class, 500)->create();
     }
 }

@@ -28,6 +28,7 @@
               </tr>
             </thead>
             <tbody>
+
               @foreach ($recent as $key => $value)
                 <tr>
                   <td>{{$value->created_at}}</td>
@@ -113,7 +114,29 @@
           Recent Comment
         </div>
         <div class="panel-body">
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+          @foreach ($comments as $key => $value)
+            <div class="row">
+              <div class="col-md-12">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <span class="pull-left">
+                      {{$value->user->username}} on {{str_limit($value->scholarship->name, $limit = 35, $end = '...')}}
+                    </span>
+                    <span class="pull-right">
+                      <a href="/admin-paul/scholarships/{{$value->scholarship->id}}/preview" type="button" class="btn btn-xs btn-success"><i class="fa fa-eye"></i></a>
+                    </span>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="panel-body">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                  </div>
+                  <div class="panel-footer">
+                    <small>email@mail.com</small> || <small>dd/mm/yyyy hh:mm:ss</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          @endforeach
         </div>
       </div>
     </div>

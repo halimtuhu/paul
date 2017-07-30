@@ -7,17 +7,20 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\News;
 use App\NewsCategory;
+use App\NewsComment;
 use Image;
+use Sentinel;
 
 class AdminNewsController extends Controller
 {
     public function index(){
       $newsList = News::select('news.*', 'news_category.category')->join('news_category', 'news.news_category_id', '=', 'news_category.id')->orderBy('news.created_at', 'desc')->get();
       $recentNewsList = News::select('news.*', 'news_category.category')->join('news_category', 'news_category.id', '=', 'news.news_category_id')->orderBy('news.created_at', 'desc')->limit('5')->get();
-      $newsLiked = News::select('title', 'liked', 'shared', DB::raw('(liked+shared) as t_like_share'))->orderBy('liked', 'desc')->limit('5')->get();
+      $newsLiked = News::select('id','title', 'liked', 'shared', DB::raw('(liked+shared) as t_like_share'))->orderBy('liked', 'desc')->limit('5')->get();
       $newsShared = News::select('title', 'shared')->orderBy('shared', 'desc')->limit('5')->get();
       $categories = NewsCategory::orderBy('category', 'acs')->get();
-      return view('admin.news.index', compact('newsList', 'recentNewsList', 'newsLiked', 'newsShared', 'categories'));
+      $comments = NewsComment::orderBy('created_at', 'desc')->limit('2')->get();
+      return view('admin.news.index', compact('newsList', 'recentNewsList', 'newsLiked', 'newsShared', 'categories', 'comments'));
     }
 
     public function add(){
@@ -88,6 +91,15 @@ class AdminNewsController extends Controller
       return redirect('/admin-paul/news/'.$updateNews->id.'/preview');
     }
 
+    public function deleteFeaturedImage($id){
+      $news = News::find($id);
+      Storage::delete('news/' . $news->featured_image);
+      $news->featured_image = null;
+      $news->save();
+
+      return redirect()->back();
+    }
+
     public function delete($id){
       $deleteNews = News::find($id);
       if (Storage::delete('news/' . $deleteNews->featured_image)) {
@@ -100,10 +112,19 @@ class AdminNewsController extends Controller
 
     public function preview($id){
       $news = News::find($id);
+      $comments = $news->comment()->orderBy('created_at', 'desc')->paginate('3');
       if($news){
-        return view('admin.news.preview', compact('news'));
+        return view('admin.news.preview', compact('news', 'comments'));
       }else{
         return redirect('/admin-paul/news');
+      }
+    }
+
+    public function category(Request $input){
+      if (isset($input->category)) {
+        return redirect('/admin-paul/news/category/'.$input->category.'/list');
+      }else{
+        return redirect('/admin-paul/news/category/'.NewsCategory::orderBy('category', 'asc')->get()->first()->id.'/list');
       }
     }
 
@@ -112,10 +133,11 @@ class AdminNewsController extends Controller
       if (!$category){
         return redirect('/admin-paul/news');
       }
-      $news = NewsCategory::find($id)->news;
+      $news = $category->news()->paginate('5');
+      $categorylist = NewsCategory::orderBy('category', 'asc')->get();
       // dd($news->count());
 
-      return view('admin.news.category', compact('category', 'news'));
+      return view('admin.news.category', compact('category', 'news', 'categorylist'));
     }
 
     public function updateCatageory($id, Request $input){
@@ -135,5 +157,22 @@ class AdminNewsController extends Controller
       }else{
         return redirect()->back();
       }
+    }
+
+    public function addComment($id, Request $input){
+      $comment = new NewsComment;
+      $comment->user_id = Sentinel::getUser()->id;
+      $comment->news_id = $id;
+      $comment->comment = $input->comment;
+      $comment->save();
+
+      return redirect()->back();
+    }
+
+    public function deleteComment($news_id, $comment_id){
+      $comment = NewsComment::find($comment_id);
+      $comment->delete();
+
+      return redirect()->back();
     }
 }

@@ -25,6 +25,14 @@ class Scholarsip extends Migration
             $table->unsignedInteger('shered')->nullable()->default(0);
             $table->timestamps();
         });
+
+        Schema::create('scholarships_comment', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('user_id');
+            $table->integer('scholarships_id');
+            $table->text('comment');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -35,5 +43,6 @@ class Scholarsip extends Migration
     public function down()
     {
         Schema::dropIfExists('scholarships');
+        Schema::dropIfExists('scholarships_comment');
     }
 }

@@ -18,6 +18,7 @@
               <div class="panel-heading">
                 <span class="pull-left">{{$value->title}}</span>
                 <span class="pull-right">
+                  <a href="/admin-paul/news/{{$value->id}}/preview" type="button" class="btn btn-success btn-xs"><i class="fa fa-eye"></i></a>
                   <a href="/admin-paul/news/{{$value->id}}/edit" type="button" class="btn btn-warning btn-xs"><i class="fa fa-edit"></i></a>
                   <form id="deleteNews{{$value->id}}" action="/admin-paul/news/{{$value->id}}/delete" method="post" style="display: none;">
                     {{ csrf_field() }}
@@ -32,7 +33,9 @@
                     <img class="img-responsive" src="{{asset('images/news/' . $value->featured_image)}}" alt="{{$value->featured_image}}" width="100%">
                   </div>
                 @endif
-                <p @if ($value->featured_image) class="col-md-9" @endif>{{str_limit($value->content, $limit = 200, $end = '...')}}</p>
+                <p @if ($value->featured_image)
+                  class="col-md-9"
+                @endif>{{strip_tags(str_limit($value->content, $limit = 200, $end = '...'))}}</p>
               </div>
               <div class="panel-footer">
                 posted on {{$value->created_at}}
@@ -41,29 +44,57 @@
           </div>
         </div>
       @endforeach
+      <center>
+        {{$news->links()}}
+      </center>
     </div>
 
     <div class="col-md-4">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          Edit Category
-        </div>
-        <div class="panel-body">
-          <form id="updateCategory" role="form" action="" method="post" enctype="multipart/form-data">
-            {{ csrf_field() }}
-            <div class="form-group">
-              <label>Category Name</label>
-              <input class="form-control" placeholder="Enter news title here" name="category" value="{{$category->category}}" required>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              Choose Category
             </div>
-          </form>
-          <form id="deleteCategory" class="form" action="/admin-paul/news/cateogry/{{$category->id}}/delete" method="post" style="display: none;">
-            {{ csrf_field() }}
-          </form>
-          <button class="btn btn-success" type="button" onclick="getElementById('updateCategory').submit();">Update</button>
-          <button class="btn btn-danger" type="button" onclick="getElementById('deleteCategory').submit();" @if ($news->count() > 0) disabled @endif>Delete</button>
-          <hr>
-          <p><small><strong>Note: </strong>Ganti dulu kategori di semua post yang tampil di sebelah kiri atau hapus semua post yang ada di sebelah kiri untuk menghapus kategori ini.</small></p>
+            <div class="panel-body">
+              <div class="form-group">
+                <form id="category" action="/admin-paul/news/category/show" method="post">
+                  {{ csrf_field() }}
+                  <select class="form-control" name="category" onchange="document.getElementById('category').submit();">
+                    @foreach ($categorylist as $key => $value)
+                      <option value="{{$value->id}}" @if ($value->id == $category->id) selected @endif>{{$value->category}}</option>
+                    @endforeach
+                  </select>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              Edit Category
+            </div>
+            <div class="panel-body">
+              <form id="updateCategory" role="form" action="" method="post" enctype="multipart/form-data">
+                {{ csrf_field() }}
+                <div class="form-group">
+                  <label>Category Name</label>
+                  <input class="form-control" placeholder="Enter news title here" name="category" value="{{$category->category}}" required>
+                </div>
+              </form>
+              <form id="deleteCategory" class="form" action="/admin-paul/news/cateogry/{{$category->id}}/delete" method="post" style="display: none;">
+                {{ csrf_field() }}
+              </form>
+              <button class="btn btn-success" type="button" onclick="getElementById('updateCategory').submit();">Update</button>
+              <button class="btn btn-danger" type="button" onclick="getElementById('deleteCategory').submit();" @if ($news->count() > 0) disabled @endif>Delete</button>
+              <hr>
+              <p><small><strong>Note: </strong>Ganti dulu kategori di semua post yang tampil di sebelah kiri atau hapus semua post yang ada di sebelah kiri untuk menghapus kategori ini.</small></p>
 
+            </div>
+          </div>
         </div>
       </div>
     </div>

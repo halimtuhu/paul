@@ -3,9 +3,9 @@
 namespace App;
 
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Cartalyst\Sentinel\Users\EloquentUser;
 
-class User extends Authenticatable
+class User extends EloquentUser
 {
     use Notifiable;
 
@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'fullname', 'username', 'email', 'password',
     ];
 
     /**
@@ -24,6 +24,18 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password'
     ];
+
+    public function newsComment(){
+      return $this->hasMany('App\NewsComment');
+    }
+
+    public function scholarshipsComment(){
+      return $this->hasMany('App\ScholarshipsComment');
+    }
+
+    public function likeNews(){
+      return $this->hasMany('App\News', 'news_like', 'user_id', 'news_id');
+    }
 }

@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Sentinel;
+use URL;
 
 class LoginController extends Controller
 {
     public function index(){
-      return view('auth.loginForm');
+      $url = URL::previous();
+      return view('auth.loginForm', compact('url'));
     }
 
     public function login(Request $input){
@@ -18,11 +20,10 @@ class LoginController extends Controller
       }
       Sentinel::authenticate($input->all(), $remember);
       if(Sentinel::check()){
-        if(Sentinel::getUser()->roles()->first()->slug == 'admin'){
-          return redirect('/admin-paul');
-        }else{
+        if (strpos($input->redirect, 'login')) {
           return redirect('/');
         }
+        return redirect($input->redirect);
       }else{
         return redirect('/login')->with(['info' => 'Login failed! Please check your email or password again.']);
       }
@@ -30,6 +31,6 @@ class LoginController extends Controller
 
     public function logout(){
       Sentinel::logout();
-      return redirect('/');
+      return redirect()->back();
     }
 }

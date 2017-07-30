@@ -42,7 +42,24 @@
               <p>
                 Current image:
                 @if ($editNews->featured_image)
-                  <img src="{{asset('images/news/' . $editNews->featured_image)}}" alt="{{$editNews->featured_image}}" width="240px">
+                  <style media="screen">
+                    .featured-image: {
+                      position:relative;
+                    }
+                    .featured-image a {
+                      font-size: 20px;
+                      color: rgba(255, 107, 107, 0.5);
+                      position: absolute;
+                      margin-left: 5px;
+                    }
+                    .featured-image a:hover {
+                      color: rgba(255, 107, 107, 1);
+                    }
+                  </style>
+                  <span class="featured-image">
+                    <a href="#" onclick="getElementById('delimg').submit();"><i class="fa fa-times"></i></a>
+                    <img src="{{asset('images/news/' . $editNews->featured_image)}}" alt="{{$editNews->featured_image}}" width="240px">
+                  </span>
                 @else
                   no image
                 @endif
@@ -60,10 +77,13 @@
               </select>
               <input id="newCategory" class="form-control" placeholder="Please specify new category here" name="new_category" style="display: none;">
             </div>
-            <button class="btn btn-success" type="button" onclick="getElementById('editNews').submit();">Post</button>
+            <button class="btn btn-success" type="button" onclick="document.getElementById('editNews').submit();">Post</button>
           </form>
         </div>
       </div>
     </div>
   </div>
+  <form id="delimg" style="display: none" action="/admin-paul/news/{{$editNews->id}}/deleteimage" method="post">
+    {{ csrf_field() }}
+  </form>
 @endsection

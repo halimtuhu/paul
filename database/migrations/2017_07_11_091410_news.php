@@ -39,7 +39,6 @@ class News extends Migration
         });
 
         Schema::create('news_like', function (Blueprint $table) {
-            $table->increments('id');
             $table->integer('user_id');
             $table->integer('news_id');
             $table->timestamps();
