@@ -39,7 +39,7 @@ class DatabaseSeeder extends Seeder
         'completed_at' => date('Y-m-d H:i:s'),
       ]);
 
-      factory(App\User::class, 50)->create()->each(function ($user) {
+      factory(App\User::class, 150)->create()->each(function ($user) {
         DB::table('role_users')->insert([
           'user_id' => $user->id,
           'role_id' => '2',
@@ -70,9 +70,9 @@ class DatabaseSeeder extends Seeder
       ]);
 
       factory(App\News::class, 100)->create()->each(function ($news) {
-        $userIds = range(1, 51);
+        $userIds = range(1, 151);
         shuffle($userIds);
-        $likeduser = array_slice($userIds, 0, random_int(2, 50));
+        $likeduser = array_slice($userIds, 0, random_int(2, 151));
         $news->likes()->attach($likeduser);
       });
       factory(App\NewsComment::class, 500)->create();

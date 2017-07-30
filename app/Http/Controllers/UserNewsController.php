@@ -18,16 +18,13 @@ class UserNewsController extends Controller
 
     public function __construct(){
       $this->categories = NewsCategory::orderBy('category', 'asc')->get();
-      $this->popular = News::select('*', DB::raw("count(news_like.news_id) as total_likes"), 'news.created_at', 'news.updated_at')->join('news_like', 'news.id', '=', 'news_like.news_id')->groupBy('news_like.news_id')->orderBy('total_likes', 'desc')->limit('3')->get();
+      $this->popular = News::select('*', DB::raw("count(news_like.news_id) as total_likes"), 'news.created_at', 'news.updated_at')->join('news_like', 'news.id', '=', 'news_like.news_id')->groupBy('news_like.news_id')->orderBy('total_likes', 'desc')->limit('10')->get();
       $this->comment = NewsComment::orderBy('created_at', 'desc')->limit('5')->get();
 
       // dd($this->popular);
     }
     public function index(){
       $news = News::orderBy('created_at', 'desc')->paginate('7');
-      // $categories = NewsCategory::orderBy('category', 'asc')->get();
-      // $popular = News::select('*', DB::raw('(liked+shared) as t_like_share'))->orderBy('t_like_share', 'desc')->limit('3')->get();
-      // $comment = User::find('1')->newsComment()->orderBy('created_at', 'desc')->limit('5')->get();
       return view('news.index', compact('news'))
         ->with('categories', $this->categories)
         ->with('popular', $this->popular)
@@ -37,9 +34,6 @@ class UserNewsController extends Controller
     public function view($id){
       $news = News::find($id);
       $newscomment = $news->comment()->orderBy('created_at', 'desc')->paginate('5');
-      $categories = NewsCategory::orderBy('category', 'asc')->get();
-      $popular = News::select('*', DB::raw('(liked+shared) as t_like_share'))->orderBy('t_like_share', 'desc')->limit('3')->get();
-      $comment = User::find('1')->newsComment()->orderBy('created_at', 'desc')->limit('5')->get();
       return view('news.view', compact('news', 'newscomment'))
         ->with('categories', $this->categories)
         ->with('popular', $this->popular)

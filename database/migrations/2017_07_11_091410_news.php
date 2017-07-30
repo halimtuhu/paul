@@ -19,8 +19,6 @@ class News extends Migration
             $table->longText('content');
             $table->string('featured_image')->nullable();
             $table->integer('news_category_id');
-            $table->unsignedInteger('liked')->default(0);
-            $table->unsignedInteger('shared')->default(0);
             $table->timestamps();
         });
 
@@ -39,13 +37,6 @@ class News extends Migration
         });
 
         Schema::create('news_like', function (Blueprint $table) {
-            $table->integer('user_id');
-            $table->integer('news_id');
-            $table->timestamps();
-        });
-
-        Schema::create('news_share', function (Blueprint $table) {
-            $table->increments('id');
             $table->integer('user_id');
             $table->integer('news_id');
             $table->timestamps();

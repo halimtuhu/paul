@@ -41,8 +41,6 @@ $factory->define(App\News::class, function (Faker\Generator $faker) {
           return $content;
         },
         'news_category_id' => App\NewsCategory::all()->random()->id,
-        'liked' => $faker->numberBetween(0, 1024),
-        'shared' => $faker->numberBetween(0, 1024),
         'featured_image' => random_int(1, 10) . '.jpg',
     ];
 });

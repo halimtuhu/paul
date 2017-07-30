@@ -1,3 +1,16 @@
+<style media="screen">
+  .imagess {
+    display: block;
+    width: 60px;
+    height: 60px;
+    margin: 0px;
+  }
+  .imagess img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+</style>
 <div class="footer-container"><!-- Begin Footer -->
     <div class="container">
         <div class="row footer-row">
@@ -18,38 +31,27 @@
                   </ul>
               </div>
               <div class="span3 footer-col">
-                  <h5>Latest Tweets</h5>
+                  <h5>Latest Comments</h5>
                   <ul>
-                      <li><a href="#">@room122</a> Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
-                      <li><a href="#">@room122</a> In interdum felis fermentum ipsum molestie sed porttitor ligula rutrum. Morbi blandit ultricies ultrices.</li>
-                      <li><a href="#">@room122</a> Vivamus nec lectus sed orci molestie molestie. Etiam mattis neque eu orci rutrum aliquam.</li>
+                      @foreach (\App\NewsComment::orderBy('created_at', 'desc')->limit('3')->get() as $key => $value)
+                        <li><a href="/news/{{$value->news->id}}">{{$value->user->username}}</a> {{$value->comment}}</li>
+                      @endforeach
                   </ul>
               </div>
               <div class="span3 footer-col">
                   <h5>Latest Posts</h5>
                    <ul class="post-list">
-                      <li><a href="#">Lorem ipsum dolor sit amet</a></li>
-                      <li><a href="#">Consectetur adipiscing elit est lacus gravida</a></li>
-                      <li><a href="#">Lectus sed orci molestie molestie etiam</a></li>
-                      <li><a href="#">Mattis consectetur adipiscing elit est lacus</a></li>
-                      <li><a href="#">Cras rutrum, massa non blandit convallis est</a></li>
+                      @foreach (\App\News::orderBy('created_at', 'desc')->limit('5')->get() as $key => $value)
+                        <li><a href="/news/{{$value->id}}">{{$value->title}}</a></li>
+                      @endforeach
                   </ul>
               </div>
               <div class="span3 footer-col">
                   <h5>Flickr Photos</h5>
                   <ul class="img-feed">
-                      <li><a href="#"><img src="img/gallery/flickr-img-1.jpg" alt="Image Feed"></a></li>
-                      <li><a href="#"><img src="img/gallery/flickr-img-1.jpg" alt="Image Feed"></a></li>
-                      <li><a href="#"><img src="img/gallery/flickr-img-1.jpg" alt="Image Feed"></a></li>
-                      <li><a href="#"><img src="img/gallery/flickr-img-1.jpg" alt="Image Feed"></a></li>
-                      <li><a href="#"><img src="img/gallery/flickr-img-1.jpg" alt="Image Feed"></a></li>
-                      <li><a href="#"><img src="img/gallery/flickr-img-1.jpg" alt="Image Feed"></a></li>
-                      <li><a href="#"><img src="img/gallery/flickr-img-1.jpg" alt="Image Feed"></a></li>
-                      <li><a href="#"><img src="img/gallery/flickr-img-1.jpg" alt="Image Feed"></a></li>
-                      <li><a href="#"><img src="img/gallery/flickr-img-1.jpg" alt="Image Feed"></a></li>
-                      <li><a href="#"><img src="img/gallery/flickr-img-1.jpg" alt="Image Feed"></a></li>
-                      <li><a href="#"><img src="img/gallery/flickr-img-1.jpg" alt="Image Feed"></a></li>
-                      <li><a href="#"><img src="img/gallery/flickr-img-1.jpg" alt="Image Feed"></a></li>
+                    @foreach (\App\News::orderBy('created_at', 'desc')->limit('12')->get() as $key => $value)
+                      <li><a class="imagess" href="/news/{{$value->id}}"><img src="{{asset('/images/news/'.$value->featured_image)}}" alt="Image Feed" width="60px"></a></li>
+                    @endforeach
                   </ul>
               </div>
           </div>
@@ -57,7 +59,7 @@
           <div class="row"><!-- Begin Sub Footer -->
               <div class="span12 footer-col footer-sub">
                   <div class="row no-margin">
-                      <div class="span6"><span class="left">Copyright 2017 Piccolo Theme edited by Halim Tuhu Praseyto. All rights reserved.</span></div>
+                      <div class="span6"><span class="left">Copyright 2017 Piccolo Theme edited by <a href="mailto:halimtuhuprasetyo@gmail.com?subject=PaulsWebsiteFeedback">Halim Tuhu Praseyto</a>. All rights reserved.</span></div>
                       <div class="span6">
                           <span class="right">
                             <a href="/">Home</a> | <a href="/news">News</a> | <a href="/education">Education</a> | <a href="/shop">Shop</a> | <a href="/forum">Forum</a> | <a href="/about">About</a>

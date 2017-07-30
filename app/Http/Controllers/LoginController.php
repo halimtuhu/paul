@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
 use Sentinel;
 use URL;
+use Socialite;
 
 class LoginController extends Controller
 {
@@ -32,5 +34,35 @@ class LoginController extends Controller
     public function logout(){
       Sentinel::logout();
       return redirect()->back();
+    }
+
+    public function redirectToProvider()
+    {
+        return Socialite::driver('facebook')->redirect();
+    }
+
+    public function handleProviderCallback()
+    {
+        $user = Socialite::driver('facebook')->user();
+        $reguler_user = User::where('email', $user->email)->get()->first();
+
+        if($reguler_user){
+          Sentinel::login($reguler_user);
+          return redirect('/');
+        }else{
+          $timestamp = date('His');
+          $user_credentials = [
+            'username' => explode('@', $user->email)[0] . $timestamp,
+            'email' => $user->email,
+            'password' => bcrypt(explode('@', $user->email)[0] . $timestamp),
+            'full_name' => $user->name
+          ];
+          $new_user = Sentinel::registerAndActivate($user_credentials);
+          $role = Sentinel::findRoleBySlug('user');
+          $role->users()->attach($new_user);
+
+          Sentinel::login($new_user);
+          return redirect('/');
+        }
     }
 }

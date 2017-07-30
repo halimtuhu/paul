@@ -1,4 +1,11 @@
 @extends('layout.user.user')
+@section('meta')
+  <meta property="og:url"                content="{{Request::url()}}" />
+  <meta property="og:type"               content="news" />
+  <meta property="og:title"              content="{{$news->title}}" />
+  <meta property="og:description"        content="{{strip_tags(str_limit($news->content, $limit = 200, $end = "..."))}}" />
+  <meta property="og:image"              content="{{env('APP_URL') . asset('/images/news/' . $news->featured_image)}}" />
+@endsection
 @section('content')
 
     <!-- Blog Content
@@ -34,7 +41,9 @@
                         @else
                           <li><a href="/news/{{$news->id}}/like"><i class="icon-hand-right"></i> {{$news->likes()->count()}} like</a></li>
                         @endif
-                        <li><a href="#"><i class="icon-share"></i> {{$news->shared}} shared</a></li>
+                        <li>
+                          <div class="fb-share-button" data-href="{{Request::url()}}" data-layout="button" data-size="small" data-mobile-iframe="false"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse">Share</a></div>
+                        </li>
                       </ul>
                       <ul class="post-data">
                         <li><i class="icon-calendar"></i> {{$news->created_at}}</li>
@@ -111,4 +120,17 @@
       @include('layout.user.sidebar')
 
     </div>
+@endsection
+
+@section('js')
+  <div id="fb-root"></div>
+  <script>
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.10&appId=103079180393054";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+  </script>
 @endsection

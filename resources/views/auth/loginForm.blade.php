@@ -59,6 +59,10 @@
                                 <div class="form-group">
                                     <input class="form-control" placeholder="Password" name="password" type="password" value="">
                                 </div>
+                                <div class="form-group">
+                                  <center>or</center>
+                                </div>
+                                <button type="button" class="btn btn-primary btn-block btn-md" onclick="location.href='/login/facebook'">Login with Facebook</button>
                                 <div class="checkbox">
                                     <label>
                                         <input name="remember" type="checkbox" value="Remember Me">Remember Me

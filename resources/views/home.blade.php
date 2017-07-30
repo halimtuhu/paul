@@ -14,6 +14,18 @@
       height: 100%;
       object-fit: cover;
     }
+    .slidder-img {
+      display: block;
+      height: 360px;
+      margin: 0px;
+      padding: 0px;
+      align-items: center;
+    }
+    .slidder-img a > img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
   </style>
   <div class="row headline"><!-- Begin Headline -->
 
@@ -23,7 +35,7 @@
         <div class="flexslider">
             <ul class="slides">
               @foreach ($news as $key => $value)
-                <li><a href="/news/{{$value->id}}"><img src="{{asset('/images/news/'.$value->featured_image)}}" alt="{{$value->title}}" /></a></li>
+                <li class="slidder-img"><a class="slidder-img" href="/news/{{$value->id}}"><img src="{{asset('/images/news/'.$value->featured_image)}}" alt="{{$value->title}}" /></a></li>
               @endforeach
             </ul>
           </div>

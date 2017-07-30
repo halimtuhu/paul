@@ -5,6 +5,8 @@
 <title>Paul's Website</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+@yield('meta')
+
 <!-- CSS
 ================================================== -->
 <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
@@ -48,11 +50,12 @@
 
 </script>
 
-@yield('js')
 
 </head>
 
 <body class="home">
+    @yield('js')
+
     <!-- Color Bars (above header)-->
 	  <div class="color-bar-1"></div>
     <div class="color-bar-2 color-bg"></div>

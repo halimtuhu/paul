@@ -15,6 +15,8 @@ Route::get('/', 'PageController@index');
 
 Route::get('/login', 'LoginController@index');
 Route::post('/login', 'LoginController@login');
+Route::get('/login/facebook', 'LoginController@redirectToProvider');
+Route::get('/login/facebook/callback', 'LoginController@handleProviderCallback');
 
 Route::get('/register', 'RegisterController@index');
 Route::post('/register', 'RegisterController@register');
