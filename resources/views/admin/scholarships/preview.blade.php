@@ -39,7 +39,7 @@
         </div>
         <div class="panel-footer">
           <a href="#" type="button" class="btn btn-primary btn-xs"><i class="fa fa-thumbs-o-up"></i> {{$scholarship->liked}}</a>
-          <a href="#" type="button" class="btn btn-warning btn-xs"><i class="fa fa-share-square-o"></i> {{$scholarship->shered}}</a>
+          <a href="#" type="button" class="btn btn-success btn-xs"><i class="fa fa-comment"></i> {{$scholarship->comment->count()}}</a>
         </div>
       </div>
     </div>
@@ -49,7 +49,7 @@
     <div class="col-md-6">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <span><strong>Comments</strong> ({{$comments->total()}})</span>
+          <span><strong>Comments</strong></span>
         </div>
         <div class="panel-body">
           @foreach ($comments as $key => $value)
@@ -61,8 +61,8 @@
                       {{$value->user->username}}
                     </span>
                     <span class="pull-right">
-                      <a href="#" type="button" class="btn btn-xs btn-danger"><i class="fa fa-times" onclick="document.getElementById('deleteComment').submit();"></i></a>
-                      <form id="deleteComment" action="/admin-paul/scholarships/{{$scholarship->id}}/comment/{{$value->id}}/delete" method="post">
+                      <a href="#" type="button" class="btn btn-xs btn-danger"><i class="fa fa-times" onclick="document.getElementById('deleteComment{{$value->id}}').submit();"></i></a>
+                      <form id="deleteComment{{$value->id}}" action="/admin-paul/scholarships/{{$scholarship->id}}/comment/{{$value->id}}/delete" method="post">
                         {{ csrf_field() }}
                       </form>
                     </span>

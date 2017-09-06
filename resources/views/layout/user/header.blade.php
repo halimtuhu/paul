@@ -15,7 +15,7 @@
       <ul class="nav">
         <li @if (Request::is('/')) class="active" @endif><a href="/">Home</a></li>
         <li @if (strpos(Request::url(), '/news')) class="active" @endif><a href="/news">News</a></li>
-        <li @if (strpos(Request::url(), '/scholarship')) class="active" @endif><a href="/education">Education</a></li>
+        <li @if (strpos(Request::url(), '/education')) class="active" @endif><a href="/education">Education</a></li>
         <li @if (strpos(Request::url(), '/shop')) class="active" @endif><a href="/shop">Shop</a></li>
         <li @if (strpos(Request::url(), '/forum')) class="active" @endif><a href="/forum">Forum</a></li>
         <li @if (strpos(Request::url(), '/scholarship')) class="active" @endif><a href="/scholarship">Scholarship</a></li>

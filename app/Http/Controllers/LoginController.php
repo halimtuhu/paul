@@ -52,9 +52,9 @@ class LoginController extends Controller
         }else{
           $timestamp = date('His');
           $user_credentials = [
-            'username' => explode('@', $user->email)[0] . $timestamp,
+            'username' => explode('@', $user->email)[0],
             'email' => $user->email,
-            'password' => bcrypt(explode('@', $user->email)[0] . $timestamp),
+            'password' => bcrypt(explode('@', $user->email)[0]),
             'full_name' => $user->name
           ];
           $new_user = Sentinel::registerAndActivate($user_credentials);

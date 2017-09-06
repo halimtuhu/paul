@@ -1,10 +1,10 @@
 @extends('layout.user.user')
 @section('meta')
   <meta property="og:url"                content="{{Request::url()}}" />
-  <meta property="og:type"               content="news" />
-  <meta property="og:title"              content="{{$news->title}}" />
-  <meta property="og:description"        content="{{strip_tags(str_limit($news->content, $limit = 200, $end = "..."))}}" />
-  <meta property="og:image"              content="{{env('APP_URL') . asset('/images/news/' . $news->featured_image)}}" />
+  <meta property="og:type"               content="scholarhsip" />
+  <meta property="og:title"              content="{{$scholarship->name}}" />
+  <meta property="og:description"        content="{{strip_tags(str_limit($scholarship->description, $limit = 200, $end = "..."))}}" />
+  <meta property="og:image"              content="{{env('APP_URL') . asset('/images/scholarships/' . $scholarship->featured_image)}}" />
 @endsection
 @section('content')
 
@@ -18,37 +18,41 @@
 
           <!-- Blog Post 1 -->
           <article>
-              <h3 class="title-bg"><a href="#">{{$news->title}}</a></h3>
+              <h3 class="title-bg"><a href="#">{{$scholarship->name}}</a></h3>
               <div class="post-content">
-                  @if ($news->featured_image)
+                  @if ($scholarship->featured_image)
                     <center>
-                      <a href="#"><img src="{{asset('/images/news/'.$news->featured_image)}}" alt="{{$news->title}}" width="65%"></a>
+                      <a href="#"><img src="{{asset('/images/scholarships/'.$scholarship->featured_image)}}" alt="{{$scholarship->name}}" width="65%"></a>
                     </center>
                   @endif
 
                   <div class="post-body">
-                    {!!$news->content!!}
+                    <span><strong>Organizer: </strong>{{$scholarship->organizer}}</span><br>
+                    <span><strong>Place: </strong>{{$scholarship->place}}</span><br>
+                    <span><strong>Deadline: </strong>{{$scholarship->deadline}}</span><br>
+                    <hr>
+                    <span><strong>Descirption:</strong></span><br>
+                    {!!$scholarship->description!!}
                   </div>
 
                   <div class="post-summary-footer">
                       <ul class="post-data" style="float: left; margin-left: 0px;">
                         @if (Sentinel::check())
-                          @if ($news->likes()->where('user_id', Sentinel::getUser()->id)->get()->first())
-                            <li><a href="/news/{{$news->id}}/dislike"><i class="icon-thumbs-up"></i> {{$news->likes()->count()}} liked</a></li>
+                          @if ($scholarship->likes()->where('user_id', Sentinel::getUser()->id)->get()->first())
+                            <li><a href="/scholarship/{{$scholarship->id}}/dislike"><i class="icon-thumbs-up"></i> {{$scholarship->likes()->count()}} liked</a></li>
                           @else
-                            <li><a href="/news/{{$news->id}}/like"><i class="icon-hand-right"></i> {{$news->likes()->count()}} like</a></li>
+                            <li><a href="/scholarship/{{$scholarship->id}}/like"><i class="icon-hand-right"></i> {{$scholarship->likes()->count()}} like</a></li>
                           @endif
                         @else
-                          <li><a href="/news/{{$news->id}}/like"><i class="icon-hand-right"></i> {{$news->likes()->count()}} like</a></li>
+                          <li><a href="/scholarship/{{$scholarship->id}}/like"><i class="icon-hand-right"></i> {{$scholarship->likes()->count()}} like</a></li>
                         @endif
                         <li>
                           <div class="fb-share-button" data-href="{{Request::url()}}" data-layout="button" data-size="small" data-mobile-iframe="false"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse">Share</a></div>
                         </li>
                       </ul>
                       <ul class="post-data">
-                        <li><i class="icon-calendar"></i> {{$news->created_at}}</li>
-                        <li><i class="icon-comment"></i> <a href="#">{{$news->comment()->count()}} Comments</a></li>
-                        <li><i class="icon-tags"></i> <a href="/news/category/{{$news->category->id}}">{{$news->category->category}}</a></li>
+                        <li><i class="icon-calendar"></i> {{$scholarship->created_at}}</li>
+                        <li><i class="icon-comment"></i> <a href="#">{{$scholarship->comment()->count()}} Comments</a></li>
                       </ul>
                   </div>
               </div>
@@ -57,7 +61,7 @@
       <!-- Post Comments
       ================================================== -->
           <section class="comments">
-            <h4 class="title-bg"><a name="comments"></a>{{$news->comment()->count()}} Comments so far</h4>
+            <h4 class="title-bg"><a name="comments"></a>{{$scholarship->comment()->count()}} Comments so far</h4>
             <!-- Comment Form -->
             {{-- <div class="comment-form-container">
                 <h6>Leave a Comment</h6>
@@ -80,7 +84,7 @@
             </div> --}}
              <ul>
                <li>
-                 <form id="addComment" action="/news/{{$news->id}}/add-comment" method="post">
+                 <form id="addComment" action="/scholarship/{{$scholarship->id}}/add-comment" method="post">
                    {{ csrf_field() }}
                    <span class="comment-name">
                      @if (Sentinel::check())
@@ -101,7 +105,7 @@
                  </form>
                </li>
 
-                @foreach ($newscomment as $key => $value)
+                @foreach ($scholarshipcomment as $key => $value)
                   <li>
                       <img src="{{asset('/images/users/no-image.jpg')}}" alt="{{$value->user->username}}" width="45px" />
                       <span class="comment-name">{{$value->user->username}}</span>
@@ -112,12 +116,12 @@
              </ul>
           </section><!-- Close comments section-->
           <div class="pagination">
-            {{$newscomment->links()}}
+            {{$scholarshipcomment->links()}}
           </div>
 
       </div><!--Close container row-->
 
-      @include('news.sidebar')
+      @include('scholarship.sidebar')
 
     </div>
 @endsection

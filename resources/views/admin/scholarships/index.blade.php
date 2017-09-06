@@ -99,7 +99,7 @@
                 <tr>
                   <td>{{$value->name}}</td>
                   <td>{{$value->place}}</td>
-                  <td>{{$value->deadline}}</td>
+                  <td nowrap>{{$value->deadline}}</td>
                 </tr>
               @endforeach
             </tbody>
@@ -128,10 +128,10 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="panel-body">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                    <p>{{$value->comment}}</p>
                   </div>
                   <div class="panel-footer">
-                    <small>email@mail.com</small> || <small>dd/mm/yyyy hh:mm:ss</small>
+                    <small>{{$value->user->email}}</small> || <small>{{$value->created_at}}</small>
                   </div>
                 </div>
               </div>

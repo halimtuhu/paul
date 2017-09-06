@@ -59,16 +59,16 @@
             <thead>
               <tr>
                 <th>News Title</th>
-                <th>Liked / Shared</th>
+                <th>Liked / Comments</th>
                 <th>Total</th>
               </tr>
             </thead>
             <tbody>
-              @foreach ($newsLiked as $key => $value)
+              @foreach ($trending as $key => $value)
                 <tr>
-                  <td><a href="/admin-paul/news/{{$value->id}}/preview">{{$value->title}}</a></td>
-                  <td>{{$value->liked}} / {{$value->shared}}</td>
-                  <td>{{$value->t_like_share}}</td>
+                  <td>{{$value->title}}</td>
+                  <td>{{$value->liked}} / {{$value->comments}}</td>
+                  <td>{{$value->total}}</td>
                 </tr>
               @endforeach
             </tbody>
@@ -159,7 +159,7 @@
                   <td>{{$value->created_at}}</td>
                   <td>{{$value->title}}</td>
                   <td>{{$value->category}}</td>
-                  <td>{{$value->liked}}/{{$value->shared}}</td>
+                  <td>{{\App\News::find($value->id)->likes->count()}}/{{\App\News::find($value->id)->comment->count()}}</td>
                   <td align="center">
                     <a href="#" type="button" class="btn btn-danger btn-xs"><i class="fa fa-times"></i></a>
                     <a href="/admin-paul/news/{{$value->id}}/edit" type="button" class="btn btn-warning btn-xs"><i class="fa fa-edit"></i></a>

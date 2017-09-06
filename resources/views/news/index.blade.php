@@ -40,7 +40,7 @@
             </div>
         </div>
 
-        @include('layout.user.sidebar')
+        @include('news.sidebar')
 
     </div>
 @endsection

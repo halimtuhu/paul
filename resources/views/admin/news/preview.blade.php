@@ -29,8 +29,8 @@
           {!!$news->content!!}
         </div>
         <div class="panel-footer">
-          <a href="#" type="button" class="btn btn-primary btn-xs"><i class="fa fa-thumbs-o-up"></i> {{$news->liked}}</a>
-          <a href="#" type="button" class="btn btn-warning btn-xs"><i class="fa fa-share-square-o"></i> {{$news->shared}}</a>
+          <a href="#" type="button" class="btn btn-primary btn-xs"><i class="fa fa-thumbs-o-up"></i> {{$news->likes->count()}}</a>
+          <a href="#" type="button" class="btn btn-success btn-xs"><i class="fa fa-comment"></i> {{$comments->total()}}</a>
         </div>
       </div>
     </div>
@@ -40,7 +40,7 @@
     <div class="col-md-6">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <span><strong>Comments</strong> ({{$comments->total()}})</span>
+          <span><strong>Comments</strong></span>
         </div>
         <div class="panel-body">
           @foreach ($comments as $key => $value)

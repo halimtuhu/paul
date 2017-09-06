@@ -16,8 +16,11 @@ class AdminScholarshipsController extends Controller
       $scholarships = Scholarship::all();
       $recent = Scholarship::orderBy('created_at', 'desc')->limit('5')->get();
       $trending = Scholarship::select('name', 'liked', 'shered', DB::raw('(liked+shered) as t_like_share'))->orderBy('t_like_share', 'desc')->limit('5')->get();
-      $near = Scholarship::select('name', 'place', 'deadline')->where('deadline', '>=', date('Y-m-s H:i:s'))->orderBy('deadline', 'asc')->limit('5')->get();
+      $near = Scholarship::select('name', 'place', 'deadline')->where('deadline', '>=', DB::raw('now()'))->orderBy('deadline', 'asc')->limit('5')->get();
       $comments = ScholarshipsComment::orderBy('created_at', 'desc')->limit('2')->get();
+
+      // dd($near);
+
       return view ('admin.scholarships.index', compact('scholarships', 'recent', 'trending', 'near', 'comments'));
     }
 
@@ -99,7 +102,7 @@ class AdminScholarshipsController extends Controller
     public function addComment($id, Request $input){
       $comment = new ScholarshipsComment;
       $comment->user_id = Sentinel::getUser()->id;
-      $comment->scholarship_id = $id;
+      $comment->scholarships_id = $id;
       $comment->comment = $input->comment;
       $comment->save();
 

@@ -35,7 +35,11 @@ Route::get('/news/category/{id}', 'UserNewsController@newsCategoryList');
 Route::get('/news/{id}/like', 'UserNewsController@like');
 Route::get('/news/{id}/dislike', 'UserNewsController@dislike');
 
-Route::get('/scholarship', 'PageController@scholarship');
+Route::get('/scholarship', 'UserScholarshipsController@index');
+Route::get('/scholarship/{id}', 'UserScholarshipsController@view');
+Route::post('/scholarship/{id}/add-comment', 'UserScholarshipsController@addComment');
+Route::get('/scholarship/{id}/like', 'UserScholarshipsController@like');
+Route::get('/scholarship/{id}/dislike', 'UserScholarshipsController@dislike');
 
 Route::group(['middleware' => 'admin'], function () {
   Route::get('/admin-paul', 'AdminController@index');

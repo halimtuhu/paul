@@ -11,6 +11,6 @@ class ScholarshipsComment extends Model
       return $this->belongsTo('App\User');
     }
     public function scholarship(){
-      return $this->belongsTo('App\Scholarship');
+      return $this->belongsTo('App\Scholarship', 'scholarships_id');
     }
 }

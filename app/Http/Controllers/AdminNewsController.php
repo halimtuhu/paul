@@ -14,13 +14,20 @@ use Sentinel;
 class AdminNewsController extends Controller
 {
     public function index(){
+
       $newsList = News::select('news.*', 'news_category.category')->join('news_category', 'news.news_category_id', '=', 'news_category.id')->orderBy('news.created_at', 'desc')->get();
       $recentNewsList = News::select('news.*', 'news_category.category')->join('news_category', 'news_category.id', '=', 'news.news_category_id')->orderBy('news.created_at', 'desc')->limit('5')->get();
-      $newsLiked = News::select('id','title', 'liked', 'shared', DB::raw('(liked+shared) as t_like_share'))->orderBy('liked', 'desc')->limit('5')->get();
-      $newsShared = News::select('title', 'shared')->orderBy('shared', 'desc')->limit('5')->get();
+      $trending = News::select('news.*', DB::raw('count(news_like.news_id) as liked'), DB::raw('count(news_comment.news_id) as comments'), DB::raw('(count(news_like.news_id) + count(news_comment.news_id)) as total'))
+        ->join('news_like', 'news_like.news_id', '=', 'news.id')
+        ->join('news_comment', 'news_comment.news_id', '=', 'news.id')
+        ->groupBy('news.id')
+        ->orderBy('total', 'desc')
+        ->limit('3')
+        ->get();
       $categories = NewsCategory::orderBy('category', 'acs')->get();
       $comments = NewsComment::orderBy('created_at', 'desc')->limit('2')->get();
-      return view('admin.news.index', compact('newsList', 'recentNewsList', 'newsLiked', 'newsShared', 'categories', 'comments'));
+      // dd();
+      return view('admin.news.index', compact('newsList', 'recentNewsList', 'trending', 'categories', 'comments'));
     }
 
     public function add(){

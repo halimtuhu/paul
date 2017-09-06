@@ -33,6 +33,12 @@ class Scholarsip extends Migration
             $table->text('comment');
             $table->timestamps();
         });
+
+        Schema::create('scholarships_like', function (Blueprint $table) {
+            $table->integer('user_id');
+            $table->integer('scholarships_id');
+            $table->timestamps();
+        });
     }
 
     /**
