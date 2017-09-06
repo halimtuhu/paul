@@ -4,7 +4,7 @@
   <meta property="og:type"               content="scholarhsip" />
   <meta property="og:title"              content="{{$scholarship->name}}" />
   <meta property="og:description"        content="{{strip_tags(str_limit($scholarship->description, $limit = 200, $end = "..."))}}" />
-  <meta property="og:image"              content="{{env('APP_URL') . asset('/images/scholarships/' . $scholarship->featured_image)}}" />
+  <meta property="og:image"              content="{{env('APP_URL') . asset('/images/scholarship/' . $scholarship->featured_image)}}" />
 @endsection
 @section('content')
 
@@ -22,7 +22,7 @@
               <div class="post-content">
                   @if ($scholarship->featured_image)
                     <center>
-                      <a href="#"><img src="{{asset('/images/scholarships/'.$scholarship->featured_image)}}" alt="{{$scholarship->name}}" width="65%"></a>
+                      <a href="#"><img src="{{asset('/images/scholarship/'.$scholarship->featured_image)}}" alt="{{$scholarship->name}}" width="65%"></a>
                     </center>
                   @endif
 

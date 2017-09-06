@@ -17,7 +17,7 @@
                 <article class="clearfix">
                   @if ($value->featured_image)
                     <div class="span3">
-                      <a href="/scholarship/{{$value->id}}"><img src="{{asset('images/scholarships/'.$value->featured_image)}}" alt="{{$value->featured_image}}" class="align-left" width="270px"></a>
+                      <a href="/scholarship/{{$value->id}}"><img src="{{asset('images/scholarship/'.$value->featured_image)}}" alt="{{$value->featured_image}}" class="align-left" width="270px"></a>
                     </div>
                   @endif
                   <div @if ($value->featured_image) class="span5" @else class="span8" @endif>

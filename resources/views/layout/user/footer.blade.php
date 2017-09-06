@@ -33,21 +33,65 @@
               <div class="span3 footer-col">
                   <h5>Latest Comments</h5>
                   <ul>
-                      @foreach (\App\NewsComment::orderBy('created_at', 'desc')->limit('3')->get() as $key => $value)
-                        <li><a href="/news/{{$value->news->id}}">{{$value->user->username}}</a> {{$value->comment}}</li>
+                      @php
+                        $newscomment = \App\NewsComment::orderBy('created_at', 'desc')->limit('2')->get();
+                        $scholarshipcomment = \App\ScholarshipsComment::orderBy('created_at', 'desc')->limit('2')->get();
+                        $comments = new \Illuminate\Support\Collection();
+                        foreach ($newscomment as $key => $value) {
+                          $comments->push([
+                            'comment_type' => 'news',
+                            'id' => $value->news->id,
+                            'username' => $value->user->username,
+                            'comment' => $value->comment,
+                            'created_at' => $value->created_at
+                          ]);
+                        }
+                        foreach ($scholarshipcomment as $key => $value) {
+                          $comments->push([
+                            'comment_type' => 'scholarship',
+                            'id' => $value->scholarship->id,
+                            'username' => $value->user->username,
+                            'comment' => $value->comment,
+                            'created_at' => $value->created_at
+                          ]);
+                        }
+                      @endphp
+                      @foreach ($comments->sortByDesc('created_at') as $key => $value)
+                        <li><a href="/{{$value['comment_type']}}/{{$value['id']}}">{{$value['username']}}</a> {{$value['comment']}}</li>
                       @endforeach
                   </ul>
               </div>
               <div class="span3 footer-col">
                   <h5>Latest Posts</h5>
-                   <ul class="post-list">
-                      @foreach (\App\News::orderBy('created_at', 'desc')->limit('5')->get() as $key => $value)
-                        <li><a href="/news/{{$value->id}}">{{$value->title}}</a></li>
+                  <ul class="post-list">
+                      @php
+                        $news = \App\News::orderBy('created_at', 'desc')->limit('2')->get();
+                        $scholarship = \App\Scholarship::orderBy('created_at', 'desc')->limit('2')->get();
+                        $posts = new \Illuminate\Support\Collection();
+                        foreach ($news as $key => $value) {
+                          $posts->push([
+                            'post_type' => 'news',
+                            'id' => $value->id,
+                            'title' => $value->title,
+                            'created_at' => $value->created_at
+                          ]);
+                        }
+                        foreach ($scholarship as $key => $value) {
+                          $posts->push([
+                            'post_type' => 'scholarship',
+                            'id' => $value->id,
+                            'title' => $value->name,
+                            'created_at' => $value->created_at
+                          ]);
+                        }
+                      @endphp
+                      @foreach ($posts->sortByDesc('created_at') as $key => $value)
+                        <li><a href="/{{$value['post_type']}}/{{$value['id']}}">{{$value['title']}} ({{$value['post_type']}})</a></li>
                       @endforeach
                   </ul>
               </div>
               <div class="span3 footer-col">
-                  <h5>Flickr Photos</h5>
+                  <h5>Shop</h5>
                   <ul class="img-feed">
                     @foreach (\App\News::orderBy('created_at', 'desc')->limit('12')->get() as $key => $value)
                       <li><a class="imagess" href="/news/{{$value->id}}"><img src="{{asset('/images/news/'.$value->featured_image)}}" alt="Image Feed" width="60px"></a></li>

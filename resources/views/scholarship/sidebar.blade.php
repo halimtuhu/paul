@@ -28,7 +28,7 @@
         @foreach ($popular as $key => $value)
           <li>
               @if ($value->featured_image)
-                <a href="/scholarship/{{$value->id}}"><img src="{{asset('/images/scholarships/'.$value->featured_image)}}" alt="{{$value->name}}" width="70px"></a>
+                <a href="/scholarship/{{$value->id}}"><img src="{{asset('/images/scholarship/'.$value->featured_image)}}" alt="{{$value->name}}" width="70px"></a>
               @endif
               <h6><a href="/scholarship/{{$value->id}}">{{$value->name}}</a></h6>
               <em>Posted on {{$value->created_at}}</em>
